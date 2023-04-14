@@ -5,8 +5,7 @@ name: Go
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [ "main" ]
 
 jobs:
 
