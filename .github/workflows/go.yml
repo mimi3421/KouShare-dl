@@ -4,8 +4,8 @@
 name: Go
 
 on:
-  push:
-    branches: [ "main" ]
+  release:
+    types: [created]
 
 jobs:
 
@@ -21,15 +21,18 @@ jobs:
           - goarch: arm64
             goos: windows
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+
+    - name: Set APP_VERSION env
+      run: echo APP_VERSION=$(echo ${GITHUB_REF} | rev | cut -d'/' -f 1 | rev ) >> ${GITHUB_ENV}
+    - name: Set BUILD_TIME env
+      run: echo BUILD_TIME=$(date) >> ${GITHUB_ENV}
     - uses: wangyoucao577/go-release-action@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         #goversion: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
         project_path: "./cmd/ks"
         overwrite : TRUE
         build_flags: -v
