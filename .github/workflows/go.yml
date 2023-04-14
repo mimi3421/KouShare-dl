@@ -5,7 +5,8 @@ name: Go
 
 on:
   push:
-    branches: [ "main" ]
+    tags:
+      - 'v*'
 
 jobs:
 
@@ -28,8 +29,9 @@ jobs:
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         #goversion: "https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz"
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
         project_path: "./cmd/ks"
-        release_name : "test"
         overwrite : TRUE
         build_flags: -v
         binary_name: "test-binary"
